@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "714195910444",
+    "project_id": "area51-2f6a5",
+    "storage_bucket": "area51-2f6a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714195910444:android:d66637487702cb11c93689",
+        "android_client_info": {
+          "package_name": "com.theseuntaylor.hexo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714195910444-sa30g73o6nr5n5j57qdkq3dk9thck2v7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB877zfBMILAHOg5MPad-tIuVQ9KHctBq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714195910444-sa30g73o6nr5n5j57qdkq3dk9thck2v7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Hexo</string>
+    <string name="user_name">User Name</string>
+    <string name="enter_game_id">Enter Game Id</string>
+    <string name="content_description">Content Description for an image.</string>
+    <string name="choose_a_username">Choose a Username</string>
+    <string name="room_id_prompt">A room will be created and an id will be generated. You can share this ID for others to join your game.</string>
+    <string name="room_id_obtained">The Game ID is obtained from the creator of the room.</string>
+</resources>
