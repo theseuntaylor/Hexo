@@ -1,12 +1,10 @@
 package com.theseuntaylor.hexo
 
-import android.graphics.Paint.Join
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -18,16 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.findNavController
 import com.theseuntaylor.hexo.core.theme.HexoTheme
-import com.theseuntaylor.hexo.feature.create_room.CreateRoomScreen
-import com.theseuntaylor.hexo.feature.join_room.JoinRoomScreen
-import com.theseuntaylor.hexo.feature.landing.LandingScreen
 import com.theseuntaylor.hexo.navigation.createRoomScreen
+import com.theseuntaylor.hexo.navigation.joinRoomScreen
 import com.theseuntaylor.hexo.navigation.landingRoute
 import com.theseuntaylor.hexo.navigation.landingScreen
 
-@ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +45,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             landingScreen(snackBarHostState = snackBarHostState, navController = navController)
                             createRoomScreen(navController)
+                            joinRoomScreen(navController)
                         }
                     }
                 }
