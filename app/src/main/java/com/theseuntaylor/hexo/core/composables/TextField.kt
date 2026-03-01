@@ -1,10 +1,8 @@
 package com.theseuntaylor.hexo.core.composables
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,14 +17,11 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.theseuntaylor.hexo.R
+import androidx.compose.ui.graphics.Color
 import com.theseuntaylor.hexo.core.TextFieldState
-import com.theseuntaylor.hexo.core.theme.HexoTheme
 import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
 import com.theseuntaylor.hexo.core.theme.md_theme_dark_secondary
-import com.theseuntaylor.hexo.core.theme.md_theme_light_onPrimaryContainer
 
 @Composable
 fun TextFieldError(textError: String) {
@@ -44,6 +39,8 @@ fun TextFieldError(textError: String) {
 fun HexoTextField(
     modifier: Modifier = Modifier,
     label: Int,
+    value: String = "",
+    onValueChange: (String) -> Unit = {},
     textFieldState: TextFieldState = remember {
         TextFieldState(
             validator = {
@@ -54,10 +51,12 @@ fun HexoTextField(
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {},
 ) {
+    val displayValue = if (value.isNotEmpty()) value else textFieldState.text
     TextField(
-        value = textFieldState.text,
+        value = displayValue,
         onValueChange = {
             textFieldState.text = it
+            onValueChange(it)
         },
         label = {
             Text(
@@ -74,13 +73,13 @@ fun HexoTextField(
                 }
             },
         textStyle = MaterialTheme.typography.bodyMedium,
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = md_theme_dark_secondary,
-            focusedContainerColor = md_theme_dark_secondary,
-            unfocusedTextColor = md_theme_light_onPrimaryContainer,
-            focusedTextColor = md_theme_light_onPrimaryContainer,
-            unfocusedLabelColor = md_theme_dark_primary,
-        ),
+         colors = TextFieldDefaults.colors(
+             unfocusedContainerColor = md_theme_dark_secondary,
+             focusedContainerColor = md_theme_dark_secondary,
+             unfocusedTextColor = Color.White,
+             focusedTextColor = Color.White,
+             unfocusedLabelColor = md_theme_dark_primary,
+         ),
         isError = textFieldState.showErrors(),
         supportingText = {
             textFieldState.getError()?.let { error -> TextFieldError(textError = error) }

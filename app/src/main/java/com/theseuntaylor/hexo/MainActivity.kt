@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.theseuntaylor.hexo.core.theme.HexoTheme
 import com.theseuntaylor.hexo.navigation.createRoomScreen
+import com.theseuntaylor.hexo.navigation.gameScreen
 import com.theseuntaylor.hexo.navigation.joinRoomScreen
 import com.theseuntaylor.hexo.navigation.landingRoute
 import com.theseuntaylor.hexo.navigation.landingScreen
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
                             landingScreen(snackBarHostState = snackBarHostState, navController = navController)
                             createRoomScreen(navController)
                             joinRoomScreen(navController)
+                            gameScreen(navController)
                         }
                     }
                 }
