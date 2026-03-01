@@ -1,79 +1,108 @@
 package com.theseuntaylor.hexo.feature.create_room
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.R
 import com.theseuntaylor.hexo.core.TextFieldState
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.HexoTextField
+import com.theseuntaylor.hexo.core.composables.Loader
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
 import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
 import com.theseuntaylor.hexo.navigation.gameRoute
-import java.util.UUID
 
 @Composable
-fun CreateRoomScreen(navController: NavController) {
-    var roomId = remember { "" }
+fun CreateRoomScreen(
+    navController: NavController,
+    viewModel: CreateRoomViewModel = hiltViewModel(),
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val uiState = viewModel.uiState
+
     val usernameState = remember {
         TextFieldState(
-            validator = { it.isNotBlank() },
-            errorFor = { "Username is required" }
+            validator = { it.isNotBlank() && it.length >= 3 },
+            errorFor = { "Username must be at least 3 characters" }
         )
     }
 
-    Column(
-        modifier = Modifier.padding(20.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            "Create",
-            style = MaterialTheme.typography.displayLarge.copy(
-                fontWeight = FontWeight.Bold
-            ),
-        )
-        Text(
-            "Room",
-            style = MaterialTheme.typography.displaySmall,
-            color = md_theme_dark_primary
-        )
-        VerticalSpacer(height = 40.dp)
-        HexoTextField(
-            label = R.string.choose_a_username,
-            textFieldState = usernameState
-        )
-        VerticalSpacer(height = 20.dp)
-        Text(
-            stringResource(id = R.string.room_id_prompt),
-            style = MaterialTheme.typography.bodySmall
-        )
-        VerticalSpacer(height = 20.dp)
-        Button(
-            text = "Create Room",
-            onClick = {
-                // Mark as focused so errors show
-                usernameState.onFocusChange(true)
-                usernameState.enableShowErrors()
-                
-                if (usernameState.isValid) {
-                    // Generate a room ID for demonstration
-                    roomId = UUID.randomUUID().toString().take(8).uppercase()
-                    Log.d("CreateRoom", "Room created with ID: $roomId, Player: ${usernameState.text}")
-                    
-                    // Navigate to game with player 1 name
-                    navController.navigate("$gameRoute/${usernameState.text}/Opponent")
-                }
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is CreateRoomUiState.Success -> {
+                val room = uiState.room
+                viewModel.resetState()
+                navController.navigate("$gameRoute/${room.creatorUsername}/Player 2")
             }
-        )
+
+            is CreateRoomUiState.Error -> {
+                snackbarHostState.showSnackbar(uiState.message)
+                viewModel.resetState()
+            }
+
+            else -> {}
+        }
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(20.dp),
+            verticalArrangement = Arrangement.Center,
+
+        ) {
+            Text(
+                "Create",
+                style = MaterialTheme.typography.displayLarge.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+            )
+            Text(
+                "Room",
+                style = MaterialTheme.typography.displaySmall,
+                color = md_theme_dark_primary
+            )
+            VerticalSpacer(height = 40.dp)
+
+            HexoTextField(
+                label = R.string.choose_a_username,
+                textFieldState = usernameState,
+            )
+
+            VerticalSpacer(height = 40.dp)
+
+            if (uiState is CreateRoomUiState.Loading) {
+                Loader()
+            } else {
+                Button(
+                    text = "Create Room",
+                    onClick = {
+                        usernameState.isFocusedDirty = true
+                        usernameState.enableShowErrors()
+                        if (usernameState.isValid) {
+                            viewModel.createRoom(usernameState.text)
+                        }
+                    },
+                )
+            }
+        }
     }
 }

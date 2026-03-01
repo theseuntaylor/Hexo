@@ -80,6 +80,7 @@ dependencies {
     // Coil and Coroutines Dependencies
     implementation 'io.coil-kt:coil-compose:2.7.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.1'
 
 
     implementation platform('androidx.compose:compose-bom:2025.03.00')

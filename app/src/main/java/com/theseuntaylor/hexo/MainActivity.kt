@@ -22,7 +22,9 @@ import com.theseuntaylor.hexo.navigation.gameScreen
 import com.theseuntaylor.hexo.navigation.joinRoomScreen
 import com.theseuntaylor.hexo.navigation.landingRoute
 import com.theseuntaylor.hexo.navigation.landingScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
