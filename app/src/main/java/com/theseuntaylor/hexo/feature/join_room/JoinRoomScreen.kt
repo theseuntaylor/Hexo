@@ -6,16 +6,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.R
+import com.theseuntaylor.hexo.core.TextFieldState
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.HexoTextField
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
@@ -24,8 +22,18 @@ import com.theseuntaylor.hexo.navigation.gameRoute
 
 @Composable
 fun JoinRoomScreen(navController: NavController) {
-    var username by remember { mutableStateOf("") }
-    var gameId by remember { mutableStateOf("") }
+    val usernameState = remember {
+        TextFieldState(
+            validator = { it.isNotBlank() },
+            errorFor = { "Username is required" }
+        )
+    }
+    val gameIdState = remember {
+        TextFieldState(
+            validator = { it.isNotBlank() },
+            errorFor = { "Game ID is required" }
+        )
+    }
 
     Column(
         modifier = Modifier.padding(20.dp),
@@ -45,14 +53,12 @@ fun JoinRoomScreen(navController: NavController) {
         VerticalSpacer(height = 40.dp)
         HexoTextField(
             label = R.string.choose_a_username,
-            value = username,
-            onValueChange = { username = it }
+            textFieldState = usernameState
         )
         VerticalSpacer(height = 20.dp)
         HexoTextField(
             label = R.string.enter_game_id,
-            value = gameId,
-            onValueChange = { gameId = it }
+            textFieldState = gameIdState
         )
         VerticalSpacer(height = 4.dp)
         Text(
@@ -63,9 +69,15 @@ fun JoinRoomScreen(navController: NavController) {
         Button(
             text = "Join Room",
             onClick = {
-                if (username.isNotBlank() && gameId.isNotBlank()) {
+                // Mark as focused so errors show
+                usernameState.onFocusChange(true)
+                gameIdState.onFocusChange(true)
+                usernameState.enableShowErrors()
+                gameIdState.enableShowErrors()
+                
+                if (usernameState.isValid && gameIdState.isValid) {
                     // Navigate to game with player 1 name
-                    navController.navigate("$gameRoute/$username/Room Creator")
+                    navController.navigate("$gameRoute/${usernameState.text}/Room Creator")
                 }
             }
         )

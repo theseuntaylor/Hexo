@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import com.theseuntaylor.hexo.core.TextFieldState
 import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
 import com.theseuntaylor.hexo.core.theme.md_theme_dark_secondary
+import com.theseuntaylor.hexo.core.theme.md_theme_light_onPrimaryContainer
 
 @Composable
 fun TextFieldError(textError: String) {
@@ -73,13 +74,13 @@ fun HexoTextField(
                 }
             },
         textStyle = MaterialTheme.typography.bodyMedium,
-         colors = TextFieldDefaults.colors(
-             unfocusedContainerColor = md_theme_dark_secondary,
-             focusedContainerColor = md_theme_dark_secondary,
-             unfocusedTextColor = Color.White,
-             focusedTextColor = Color.White,
-             unfocusedLabelColor = md_theme_dark_primary,
-         ),
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = md_theme_dark_secondary,
+            focusedContainerColor = md_theme_dark_secondary,
+            unfocusedTextColor = md_theme_light_onPrimaryContainer,
+            focusedTextColor = md_theme_light_onPrimaryContainer,
+            unfocusedLabelColor = md_theme_dark_primary,
+        ),
         isError = textFieldState.showErrors(),
         supportingText = {
             textFieldState.getError()?.let { error -> TextFieldError(textError = error) }
@@ -94,5 +95,4 @@ fun HexoTextField(
             }
         ),
     )
-    textFieldState.getError()?.let { error -> TextFieldError(textError = error) }
 }

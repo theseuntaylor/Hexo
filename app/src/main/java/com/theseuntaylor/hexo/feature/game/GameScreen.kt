@@ -76,7 +76,7 @@ fun GameScreen(
                     fontWeight = FontWeight.Bold
                 )
             )
-            Box(modifier = Modifier.size(40.dp)) // Spacer for alignment
+            Box(modifier = Modifier.size(40.dp))
         }
 
         // Game status

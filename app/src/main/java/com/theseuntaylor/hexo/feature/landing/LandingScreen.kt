@@ -48,9 +48,10 @@ fun LandingScreen(navController: NavController) {
         Button(text = "Create A Room", onClick = {
             navController.navigate(createRoomRoute)
         })
-        VerticalSpacer(height = 20.dp)
-        Button(text = "Join A Room", onClick = {
-            navController.navigate(joinRoomRoute)
-        })
+        // Join A Room button disabled until implementation is complete
+        // VerticalSpacer(height = 20.dp)
+        // Button(text = "Join A Room", onClick = {
+        //     navController.navigate(joinRoomRoute)
+        // })
     }
 }
