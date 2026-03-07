@@ -16,3 +16,4 @@ local.properties
 /gradle/gradle-daemon-jvm.properties
 /Task
 /.vscode/settings.json
+app/release/app-release.aab
