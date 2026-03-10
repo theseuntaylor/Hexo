@@ -9,6 +9,8 @@ jobs:
   deploy:
     name: Build & Deploy to Play Store
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -74,10 +76,14 @@ jobs:
           track: production
           status: completed
 
-      - name: Commit versionCode bump back to main
+      - name: Commit versionCode bump back to master
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add app/build.gradle
-          git commit -m "chore: bump versionCode to ${{ env.NEW_VERSION_CODE }} after ${{ github.ref_name }} release"
-          git push origin master
+          if git diff --staged --quiet; then
+            echo "No changes to commit — versionCode already bumped."
+          else
+            git commit -m "chore: bump versionCode to ${{ env.NEW_VERSION_CODE }} after ${{ github.ref_name }} release"
+            git push origin master
+          fi
