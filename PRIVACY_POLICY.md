@@ -115,5 +115,5 @@ We may update this Privacy Policy from time to time. Any changes will be reflect
 If you have questions or concerns about this Privacy Policy, please contact:
 
 **Developer:** theseuntaylor  
-**Email:** [your-email@example.com]  
+**Email:** [seun.gtaylor@gmail.com](mailto:seun.gtaylor@gmail.com)
 **GitHub:** [https://github.com/theseuntaylor](https://github.com/theseuntaylor)
