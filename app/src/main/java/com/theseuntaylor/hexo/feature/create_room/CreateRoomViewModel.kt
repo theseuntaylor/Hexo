@@ -14,40 +14,18 @@ import javax.inject.Named
 
 @HiltViewModel
 class CreateRoomViewModel @Inject constructor(
-    @Named("firebase") private val firebaseRoomRepository: RoomRepository,
-    @Named("local") private val localRoomRepository: RoomRepository,
+    @Named("firebase") private val repository: RoomRepository,
 ) : ViewModel() {
-
-    var isPublic by mutableStateOf(false)
-        private set
 
     var uiState by mutableStateOf<CreateRoomUiState>(CreateRoomUiState.Idle)
         private set
 
-    fun onIsPublicChanged(value: Boolean) {
-        isPublic = value
-    }
-
     fun createRoom(username: String) {
-        val room = Room(
-            creatorUsername = username.trim(),
-            isPublic = isPublic,
-        )
-
-        val repository = if (isPublic) firebaseRoomRepository else localRoomRepository
-
         uiState = CreateRoomUiState.Loading
-
         viewModelScope.launch {
-            repository.createRoom(room)
-                .onSuccess { createdRoom ->
-                    uiState = CreateRoomUiState.Success(createdRoom)
-                }
-                .onFailure { exception ->
-                    uiState = CreateRoomUiState.Error(
-                        exception.message ?: "Failed to create room"
-                    )
-                }
+            repository.createRoom(Room(creatorUsername = username.trim()))
+                .onSuccess { room -> uiState = CreateRoomUiState.Success(room) }
+                .onFailure { e -> uiState = CreateRoomUiState.Error(e.message ?: "Failed to create room") }
         }
     }
 

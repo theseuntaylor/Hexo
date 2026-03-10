@@ -22,6 +22,8 @@ import com.theseuntaylor.hexo.navigation.gameScreen
 import com.theseuntaylor.hexo.navigation.joinRoomScreen
 import com.theseuntaylor.hexo.navigation.landingRoute
 import com.theseuntaylor.hexo.navigation.landingScreen
+import com.theseuntaylor.hexo.navigation.localGameScreen
+import com.theseuntaylor.hexo.navigation.offlineGameScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,26 +52,12 @@ class MainActivity : ComponentActivity() {
                             createRoomScreen(navController)
                             joinRoomScreen(navController)
                             gameScreen(navController)
+                            localGameScreen(navController)
+                            offlineGameScreen(navController)
                         }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HexoTheme {
-        Greeting("Android")
     }
 }
