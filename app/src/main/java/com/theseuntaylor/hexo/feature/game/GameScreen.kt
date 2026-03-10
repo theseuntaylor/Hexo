@@ -60,7 +60,6 @@ fun GameScreen(
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Header
         Row(
             modifier = Modifier
                 .fillMaxWidth()
