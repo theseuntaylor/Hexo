@@ -46,14 +46,13 @@ fun CreateRoomScreen(
             is CreateRoomUiState.Success -> {
                 val room = uiState.room
                 viewModel.resetState()
-                navController.navigate("$gameRoute/${room.creatorUsername}/Player 2")
+                // Creator is always X; navigate with roomId and symbol
+                navController.navigate("$gameRoute/${room.roomId}/X")
             }
-
             is CreateRoomUiState.Error -> {
                 snackbarHostState.showSnackbar(uiState.message)
                 viewModel.resetState()
             }
-
             else -> {}
         }
     }
@@ -67,7 +66,6 @@ fun CreateRoomScreen(
                 .padding(paddingValues)
                 .padding(20.dp),
             verticalArrangement = Arrangement.Center,
-
         ) {
             Text(
                 "Create",

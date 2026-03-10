@@ -1,6 +1,5 @@
 package com.theseuntaylor.hexo.feature.landing
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,7 @@ import com.theseuntaylor.hexo.core.composables.VerticalSpacer
 import com.theseuntaylor.hexo.core.theme.HexoTheme
 import com.theseuntaylor.hexo.navigation.createRoomRoute
 import com.theseuntaylor.hexo.navigation.joinRoomRoute
+import com.theseuntaylor.hexo.navigation.localGameRoute
 
 @Composable
 fun LandingScreen(navController: NavController) {
@@ -48,10 +48,13 @@ fun LandingScreen(navController: NavController) {
         Button(text = "Create A Room", onClick = {
             navController.navigate(createRoomRoute)
         })
-        // Join A Room button disabled until implementation is complete
-        // VerticalSpacer(height = 20.dp)
-        // Button(text = "Join A Room", onClick = {
-        //     navController.navigate(joinRoomRoute)
-        // })
+        VerticalSpacer(height = 20.dp)
+        Button(text = "Join A Room", onClick = {
+            navController.navigate(joinRoomRoute)
+        })
+        VerticalSpacer(height = 20.dp)
+        Button(text = "Play Offline", onClick = {
+            navController.navigate(localGameRoute)
+        })
     }
 }

@@ -7,56 +7,49 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
 import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
+import com.theseuntaylor.hexo.data.model.Room
 import com.theseuntaylor.hexo.navigation.landingRoute
 
 @Composable
 fun GameScreen(
     navController: NavController,
-    player1Name: String = "Player 1",
-    player2Name: String = "Player 2"
+    viewModel: GameViewModel = hiltViewModel(),
 ) {
-    var gameState by remember {
-        mutableStateOf(
-            GameState(
-                player1Name = player1Name,
-                player2Name = player2Name,
-                player1Symbol = CellValue.X,
-                player2Symbol = CellValue.O
-            )
-        )
-    }
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Header with back button
+        // Header
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -79,101 +72,151 @@ fun GameScreen(
             Box(modifier = Modifier.size(40.dp))
         }
 
-        // Game status
-        GameStatusSection(gameState)
-
-        VerticalSpacer(height = 30.dp)
-
-        // Game board
-        GameBoard(
-            gameState = gameState,
-            onCellClick = { index ->
-                if (gameState.isValidMove(index)) {
-                    // Make the move
-                    val newBoard = TicTacToeLogic.makeMove(
-                        gameState.board,
-                        index,
-                        gameState.currentPlayer
-                    )
-
-                    // Check game status
-                    val newStatus = TicTacToeLogic.determineGameStatus(
-                        newBoard,
-                        gameState.currentPlayer,
-                        gameState.getCurrentPlayerName()
-                    )
-
-                    // Update game state
-                    gameState = gameState.copy(
-                        board = newBoard,
-                        gameStatus = newStatus,
-                        currentPlayer = if (newStatus == GameStatus.InProgress) {
-                            TicTacToeLogic.getNextPlayer(gameState.currentPlayer)
-                        } else {
-                            gameState.currentPlayer
-                        }
-                    )
+        when (val state = uiState) {
+            is GameUiState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = md_theme_dark_primary)
                 }
             }
-        )
 
-        VerticalSpacer(height = 40.dp)
-
-        // Reset button
-        if (gameState.gameStatus != GameStatus.InProgress) {
-            Button(
-                text = "Play Again",
-                onClick = {
-                    gameState = GameState(
-                        player1Name = player1Name,
-                        player2Name = player2Name,
-                        player1Symbol = CellValue.X,
-                        player2Symbol = CellValue.O
-                    )
+            is GameUiState.WaitingForOpponent -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(color = md_theme_dark_primary)
+                        VerticalSpacer(height = 24.dp)
+                        Text(
+                            "Waiting for opponent...",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = md_theme_dark_primary
+                            )
+                        )
+                        VerticalSpacer(height = 12.dp)
+                        Text(
+                            "Room code:",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        VerticalSpacer(height = 4.dp)
+                        Text(
+                            state.roomId,
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 6.sp
+                            ),
+                            color = md_theme_dark_primary
+                        )
+                        VerticalSpacer(height = 4.dp)
+                        Text(
+                            "Share this code with your opponent",
+                            style = MaterialTheme.typography.bodySmall,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
-            )
-            VerticalSpacer(height = 10.dp)
-        }
+            }
 
-        Button(
-            text = "Back to Menu",
-            onClick = { navController.navigate(landingRoute) }
-        )
+            is GameUiState.InProgress -> {
+                OnlineGameContent(
+                    room = state.room,
+                    mySymbol = state.mySymbol,
+                    isFinished = false,
+                    onCellClick = { index -> viewModel.makeMove(index) },
+                    onPlayAgain = { viewModel.resetGame() },
+                    onBackToMenu = { navController.navigate(landingRoute) }
+                )
+            }
+
+            is GameUiState.Finished -> {
+                OnlineGameContent(
+                    room = state.room,
+                    mySymbol = state.mySymbol,
+                    isFinished = true,
+                    onCellClick = {},
+                    onPlayAgain = { viewModel.resetGame() },
+                    onBackToMenu = { navController.navigate(landingRoute) }
+                )
+            }
+
+            is GameUiState.OpponentDisconnected -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            "Opponent disconnected",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = md_theme_dark_primary,
+                            )
+                        )
+                        VerticalSpacer(height = 8.dp)
+                        Text(
+                            "Waiting for them to reconnect...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Center,
+                        )
+                        VerticalSpacer(height = 24.dp)
+                        Button(text = "Back to Menu", onClick = { navController.navigate(landingRoute) })
+                    }
+                }
+            }
+
+            is GameUiState.Error -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            state.message,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = TextAlign.Center
+                        )
+                        VerticalSpacer(height = 20.dp)
+                        Button(text = "Back to Menu", onClick = { navController.navigate(landingRoute) })
+                    }
+                }
+            }
+
+            else -> Unit // offline states handled by OfflineGameScreen
+        }
     }
 }
 
 @Composable
-fun GameStatusSection(gameState: GameState) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        when (gameState.gameStatus) {
-            is GameStatus.InProgress -> {
-                Text(
-                    "${gameState.getCurrentPlayerName()}'s Turn",
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary
-                    )
-                )
-                VerticalSpacer(height = 8.dp)
-                Text(
-                    "Symbol: ${gameState.currentPlayer.getSymbolString()}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+private fun OnlineGameContent(
+    room: Room,
+    mySymbol: String,
+    isFinished: Boolean,
+    onCellClick: (Int) -> Unit,
+    onPlayAgain: () -> Unit,
+    onBackToMenu: () -> Unit,
+) {
+    val isMyTurn = room.currentTurn == mySymbol && !isFinished
 
-            is GameStatus.Won -> {
-                Text(
-                    "${gameState.gameStatus.winner} Wins!",
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary
-                    )
-                )
-            }
+    // Status banner
+    OnlineGameStatusSection(room = room, mySymbol = mySymbol, isFinished = isFinished)
 
-            GameStatus.Draw -> {
+    VerticalSpacer(height = 30.dp)
+
+    // Board
+    OnlineGameBoard(
+        board = room.board,
+        isInteractive = isMyTurn,
+        onCellClick = onCellClick
+    )
+
+    VerticalSpacer(height = 40.dp)
+
+    if (isFinished) {
+        Button(text = "Play Again", onClick = onPlayAgain)
+        VerticalSpacer(height = 10.dp)
+    }
+
+    Button(text = "Back to Menu", onClick = onBackToMenu)
+}
+
+@Composable
+private fun OnlineGameStatusSection(room: Room, mySymbol: String, isFinished: Boolean) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        when {
+            isFinished && room.winner == "draw" -> {
                 Text(
                     "It's a Draw!",
                     style = MaterialTheme.typography.headlineSmall.copy(
@@ -182,14 +225,46 @@ fun GameStatusSection(gameState: GameState) {
                     )
                 )
             }
+            isFinished && room.winner.isNotEmpty() -> {
+                val youWon = room.winner == mySymbol
+                Text(
+                    if (youWon) "You Win!" else "You Lose!",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = md_theme_dark_primary
+                    )
+                )
+            }
+            room.currentTurn == mySymbol -> {
+                Text(
+                    "Your Turn",
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = md_theme_dark_primary
+                    )
+                )
+                VerticalSpacer(height = 4.dp)
+                Text("You are $mySymbol", style = MaterialTheme.typography.bodyMedium)
+            }
+            else -> {
+                Text(
+                    "Opponent's Turn",
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                VerticalSpacer(height = 4.dp)
+                Text("You are $mySymbol", style = MaterialTheme.typography.bodyMedium)
+            }
         }
     }
 }
 
 @Composable
-fun GameBoard(
-    gameState: GameState,
-    onCellClick: (Int) -> Unit
+private fun OnlineGameBoard(
+    board: List<String>,
+    isInteractive: Boolean,
+    onCellClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -207,10 +282,10 @@ fun GameBoard(
             ) {
                 for (col in 0..2) {
                     val index = row * 3 + col
-                    GameCell(
-                        cellValue = gameState.board[index],
+                    OnlineGameCell(
+                        symbol = board[index],
                         onClick = { onCellClick(index) },
-                        isGameActive = gameState.gameStatus == GameStatus.InProgress,
+                        isInteractive = isInteractive && board[index].isEmpty(),
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -220,40 +295,30 @@ fun GameBoard(
 }
 
 @Composable
-fun GameCell(
-    cellValue: CellValue,
+private fun OnlineGameCell(
+    symbol: String,
     onClick: () -> Unit,
-    isGameActive: Boolean,
-    modifier: Modifier = Modifier
+    isInteractive: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .aspectRatio(1f)
             .background(Color.LightGray)
-            .clickable(enabled = isGameActive && cellValue == CellValue.Empty) {
-                onClick()
-            },
+            .clickable(enabled = isInteractive) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = cellValue.getSymbolString(),
+            text = symbol,
             style = MaterialTheme.typography.displayLarge.copy(
                 fontSize = 48.sp,
                 fontWeight = FontWeight.Bold
             ),
-            color = when (cellValue) {
-                CellValue.X -> md_theme_dark_primary
-                CellValue.O -> Color.White
-                CellValue.Empty -> Color.Transparent
+            color = when (symbol) {
+                "X" -> md_theme_dark_primary
+                "O" -> Color.White
+                else -> Color.Transparent
             }
         )
-    }
-}
-
-private fun CellValue.getSymbolString(): String {
-    return when (this) {
-        CellValue.X -> "X"
-        CellValue.O -> "O"
-        CellValue.Empty -> ""
     }
 }
