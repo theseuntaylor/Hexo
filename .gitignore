@@ -18,3 +18,4 @@ local.properties
 /.vscode/settings.json
 app/release/app-release.aab
 /.idea/deviceManager.xml
+key.properties
