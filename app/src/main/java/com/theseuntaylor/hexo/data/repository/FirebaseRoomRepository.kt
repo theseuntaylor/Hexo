@@ -126,6 +126,22 @@ class FirebaseRoomRepository @Inject constructor(
         }
     }
 
+    override suspend fun setPlayerConnected(
+        roomId: String,
+        symbol: String,
+        connected: Boolean,
+    ): Result<Unit> {
+        return try {
+            val field = if (symbol == "X") "player1Connected" else "player2Connected"
+            firestore.collection(ROOMS_COLLECTION).document(roomId)
+                .update(field, connected)
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override fun observeRoom(roomId: String): Flow<Room> = callbackFlow {
         val listenerRegistration = firestore
             .collection(ROOMS_COLLECTION)

@@ -9,6 +9,8 @@ data class Room(
     val currentTurn: String = "X",
     val status: String = "waiting",
     val winner: String = "",
+    val player1Connected: Boolean = false,
+    val player2Connected: Boolean = false,
     val isPublic: Boolean = false,
     val createdAt: Long = System.currentTimeMillis(),
 )

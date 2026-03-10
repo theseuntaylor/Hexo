@@ -30,5 +30,8 @@ class LocalRoomRepository @Inject constructor() : RoomRepository {
     override suspend fun resetGame(roomId: String): Result<Unit> =
         Result.failure(UnsupportedOperationException("Local repository does not support online game reset."))
 
+    override suspend fun setPlayerConnected(roomId: String, symbol: String, connected: Boolean): Result<Unit> =
+        Result.failure(UnsupportedOperationException("Local repository does not support connection tracking."))
+
     override fun observeRoom(roomId: String): Flow<Room> = emptyFlow()
 }
