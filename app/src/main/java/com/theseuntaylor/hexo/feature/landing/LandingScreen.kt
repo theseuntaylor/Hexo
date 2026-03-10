@@ -31,13 +31,6 @@ fun LandingScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(20.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.app_icon_background),
-            contentDescription = stringResource(id = R.string.content_description),
-            modifier = Modifier
-                .width(64.dp)
-                .height(64.dp)
-        )
         VerticalSpacer(height = 10.dp)
         Text(
             text = "HEXO",
