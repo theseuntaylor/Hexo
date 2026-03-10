@@ -32,7 +32,7 @@ fun LandingScreen(navController: NavController) {
         modifier = Modifier.padding(20.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.colourful_logo_background),
+            painter = painterResource(id = R.drawable.app_icon_background),
             contentDescription = stringResource(id = R.string.content_description),
             modifier = Modifier
                 .width(64.dp)
