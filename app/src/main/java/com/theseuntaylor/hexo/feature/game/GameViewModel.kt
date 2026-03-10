@@ -21,16 +21,13 @@ class GameViewModel @Inject constructor(
 
     private val roomId: String = checkNotNull(savedStateHandle["roomId"])
     private val mySymbol: String = checkNotNull(savedStateHandle["mySymbol"])
-    private val isOnline: Boolean = savedStateHandle["isOnline"] ?: true
 
     private val _uiState = MutableStateFlow<GameUiState>(GameUiState.Loading)
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     init {
-        if (isOnline) {
-            markConnected(connected = true)
-            observeRoom()
-        }
+        markConnected(connected = true)
+        observeRoom()
     }
 
     // ── Online ──────────────────────────────────────────────────────────────
@@ -80,6 +77,6 @@ class GameViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        if (isOnline) markConnected(connected = false)
+        markConnected(connected = false)
     }
 }
