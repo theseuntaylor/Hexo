@@ -21,7 +21,7 @@ A modern multiplayer Tic-Tac-Toe game for Android, built with Jetpack Compose an
 - **Async**: Kotlin Coroutines + Flow
 - **Build Tool**: Gradle 9.0.0
 - **Min SDK**: 24 (Android 7.0)
-- **Target SDK**: 35 (Android 15)
+- **Target SDK**: 36 (Android 16)
 
 ## 📁 Project Structure
 
