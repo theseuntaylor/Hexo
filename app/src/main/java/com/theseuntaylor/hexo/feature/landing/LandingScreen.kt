@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
+import com.theseuntaylor.hexo.navigation.computerSetupRoute
 import com.theseuntaylor.hexo.navigation.createRoomRoute
 import com.theseuntaylor.hexo.navigation.joinRoomRoute
 import com.theseuntaylor.hexo.navigation.localGameRoute
@@ -40,6 +41,10 @@ fun LandingScreen(navController: NavController) {
         VerticalSpacer(height = 20.dp)
         Button(text = "Play Offline", onClick = {
             navController.navigate(localGameRoute)
+        })
+        VerticalSpacer(height = 20.dp)
+        Button(text = "Play vs Computer", onClick = {
+            navController.navigate(computerSetupRoute)
         })
     }
 }

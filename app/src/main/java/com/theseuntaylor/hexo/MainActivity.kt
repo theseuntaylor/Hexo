@@ -17,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.theseuntaylor.hexo.core.theme.HexoTheme
+import com.theseuntaylor.hexo.navigation.computerGameScreen
+import com.theseuntaylor.hexo.navigation.computerSetupScreen
 import com.theseuntaylor.hexo.navigation.createRoomScreen
 import com.theseuntaylor.hexo.navigation.gameScreen
 import com.theseuntaylor.hexo.navigation.joinRoomScreen
@@ -54,6 +56,8 @@ class MainActivity : ComponentActivity() {
                             gameScreen(navController)
                             localGameScreen(navController)
                             offlineGameScreen(navController)
+                            computerSetupScreen(navController)
+                            computerGameScreen(navController)
                         }
                     }
                 }

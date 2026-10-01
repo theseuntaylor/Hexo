@@ -4,6 +4,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.theseuntaylor.hexo.feature.computer.ComputerGameScreen
+import com.theseuntaylor.hexo.feature.computer.ComputerSetupScreen
 import com.theseuntaylor.hexo.feature.create_room.CreateRoomScreen
 import com.theseuntaylor.hexo.feature.join_room.JoinRoomScreen
 import com.theseuntaylor.hexo.feature.landing.LandingScreen
@@ -17,6 +19,8 @@ const val joinRoomRoute = "join_room_route"
 const val gameRoute = "game_route"
 const val localGameRoute = "local_game_route"
 const val offlineGameRoute = "offline_game_route"
+const val computerSetupRoute = "computer_setup_route"
+const val computerGameRoute = "computer_game_route"
 
 fun NavGraphBuilder.landingScreen(snackBarHostState: SnackbarHostState, navController: NavController) {
     composable(route = landingRoute) {
@@ -53,5 +57,19 @@ fun NavGraphBuilder.localGameScreen(navController: NavController) {
 fun NavGraphBuilder.offlineGameScreen(navController: NavController) {
     composable(route = "$offlineGameRoute/{player1Name}/{player2Name}") {
         OfflineGameScreen(navController = navController)
+    }
+}
+
+/** Difficulty picker before a game against the computer */
+fun NavGraphBuilder.computerSetupScreen(navController: NavController) {
+    composable(route = computerSetupRoute) {
+        ComputerSetupScreen(navController = navController)
+    }
+}
+
+/** Single-player game against the computer */
+fun NavGraphBuilder.computerGameScreen(navController: NavController) {
+    composable(route = "$computerGameRoute/{difficulty}") {
+        ComputerGameScreen(navController = navController)
     }
 }
