@@ -6,6 +6,7 @@ A modern multiplayer Tic-Tac-Toe game for Android, built with Jetpack Compose an
 
 - **Online Multiplayer** - Create or join rooms to play with friends in real-time
 - **Local Play** - Play offline against a friend on the same device
+- **Play vs Computer** - Play offline against an AI opponent with four difficulty levels: Easy, Medium, Hard and Devilish
 - **Clean UI** - Modern Material Design 3 interface built with Jetpack Compose
 - **Real-time Sync** - Game state synchronized across devices using Firebase Firestore
 - **Room Management** - Create custom game rooms with unique codes
@@ -36,6 +37,7 @@ app/src/main/java/com/theseuntaylor/hexo/
 ├── di/                     # Dependency injection modules
 ├── feature/                # Feature modules
 │   ├── landing/            # Landing screen
+│   ├── computer/           # Play-vs-computer mode & AI opponent
 │   ├── create_room/        # Room creation flow
 │   ├── join_room/          # Join room flow
 │   └── game/               # Game screen & logic
@@ -111,6 +113,7 @@ The following secrets must be configured in **Settings > Secrets and variables >
 
 1. **Create a Room**: Generate a unique room code and share it with a friend
 2. **Join a Room**: Enter a room code to join an existing game
+   - Or choose **Play vs Computer** and pick a difficulty to play solo
 3. **Play**: Take turns placing X's and O's on the 3x3 grid
 4. **Win**: Get three in a row horizontally, vertically, or diagonally
 
