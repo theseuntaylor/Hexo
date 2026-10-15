@@ -62,6 +62,10 @@ android {
     buildFeatures {
         compose true
     }
+    testOptions {
+        // AGP only installs androidTestUtil APKs (test-services for TestStorage) under the orchestrator.
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -117,6 +121,7 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     androidTestImplementation 'androidx.test.services:storage:1.5.0'
     androidTestUtil 'androidx.test.services:test-services:1.5.0'
+    androidTestUtil 'androidx.test:orchestrator:1.5.1'
 
     androidTestImplementation platform('androidx.compose:compose-bom:2025.03.00')
 
