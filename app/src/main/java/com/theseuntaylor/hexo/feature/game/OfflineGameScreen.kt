@@ -30,7 +30,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
-import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
+import com.theseuntaylor.hexo.core.theme.OMarkColor
+import com.theseuntaylor.hexo.core.theme.XMarkColor
 import com.theseuntaylor.hexo.navigation.landingRoute
 
 @Composable
@@ -123,7 +124,7 @@ private fun OfflineStatusSection(gameState: GameState) {
                     "${gameState.getCurrentPlayerName()}'s Turn",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary,
+                        color = MaterialTheme.colorScheme.primary,
                     ),
                 )
                 VerticalSpacer(height = 4.dp)
@@ -137,7 +138,7 @@ private fun OfflineStatusSection(gameState: GameState) {
                     "${status.winner} Wins!",
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary,
+                        color = MaterialTheme.colorScheme.primary,
                     ),
                 )
             }
@@ -146,7 +147,7 @@ private fun OfflineStatusSection(gameState: GameState) {
                     "It's a Draw!",
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary,
+                        color = MaterialTheme.colorScheme.primary,
                     ),
                 )
             }
@@ -164,7 +165,7 @@ private fun OfflineBoard(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.outlineVariant),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         for (row in 0..2) {
@@ -196,7 +197,7 @@ private fun OfflineCell(
     Box(
         modifier = modifier
             .aspectRatio(1f)
-            .background(Color.LightGray)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable(enabled = isInteractive) { onClick() },
         contentAlignment = Alignment.Center,
     ) {
@@ -207,8 +208,8 @@ private fun OfflineCell(
                 fontWeight = FontWeight.Bold,
             ),
             color = when (cellValue) {
-                CellValue.X -> md_theme_dark_primary
-                CellValue.O -> Color.White
+                CellValue.X -> XMarkColor
+                CellValue.O -> OMarkColor
                 CellValue.Empty -> Color.Transparent
             },
         )

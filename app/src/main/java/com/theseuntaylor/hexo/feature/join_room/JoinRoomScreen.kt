@@ -24,7 +24,6 @@ import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.HexoTextField
 import com.theseuntaylor.hexo.core.composables.Loader
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
-import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
 import com.theseuntaylor.hexo.navigation.gameRoute
 
 @Composable
@@ -83,7 +82,7 @@ fun JoinRoomScreen(
             Text(
                 "Room",
                 style = MaterialTheme.typography.displaySmall,
-                color = md_theme_dark_primary,
+                color = MaterialTheme.colorScheme.primary,
             )
             VerticalSpacer(height = 40.dp)
             HexoTextField(

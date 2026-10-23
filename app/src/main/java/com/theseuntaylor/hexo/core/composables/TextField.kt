@@ -20,9 +20,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import com.theseuntaylor.hexo.core.TextFieldState
-import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
-import com.theseuntaylor.hexo.core.theme.md_theme_dark_secondary
-import com.theseuntaylor.hexo.core.theme.md_theme_light_onPrimaryContainer
 
 @Composable
 fun TextFieldError(textError: String) {
@@ -75,11 +72,11 @@ fun HexoTextField(
             },
         textStyle = MaterialTheme.typography.bodyMedium,
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = md_theme_dark_secondary,
-            focusedContainerColor = md_theme_dark_secondary,
-            unfocusedTextColor = md_theme_light_onPrimaryContainer,
-            focusedTextColor = md_theme_light_onPrimaryContainer,
-            unfocusedLabelColor = md_theme_dark_primary,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
         isError = textFieldState.showErrors(),
         supportingText = {

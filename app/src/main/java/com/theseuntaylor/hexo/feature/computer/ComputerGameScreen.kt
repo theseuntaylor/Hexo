@@ -33,7 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
-import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
+import com.theseuntaylor.hexo.core.theme.OMarkColor
+import com.theseuntaylor.hexo.core.theme.XMarkColor
 import com.theseuntaylor.hexo.feature.game.CellValue
 import com.theseuntaylor.hexo.navigation.landingRoute
 
@@ -77,7 +78,7 @@ fun ComputerGameScreen(
             modifier = Modifier.testTag("game_status"),
             style = MaterialTheme.typography.headlineSmall.copy(
                 fontWeight = FontWeight.Bold,
-                color = md_theme_dark_primary,
+                color = MaterialTheme.colorScheme.primary,
             ),
         )
         VerticalSpacer(height = 8.dp)
@@ -136,7 +137,7 @@ private fun Board(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.outlineVariant),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         for (row in 0..2) {
@@ -151,7 +152,7 @@ private fun Board(
                         modifier = Modifier
                             .weight(1f)
                             .aspectRatio(1f)
-                            .background(if (index == stolenCell) MaterialTheme.colorScheme.errorContainer else Color.LightGray)
+                            .background(if (index == stolenCell) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.surfaceVariant)
                             .clickable(enabled = isInteractive && cell == CellValue.Empty) { onCellClick(index) }
                             .testTag("cell_$index"),
                         contentAlignment = Alignment.Center,
@@ -167,8 +168,8 @@ private fun Board(
                                 fontWeight = FontWeight.Bold,
                             ),
                             color = when (cell) {
-                                CellValue.X -> md_theme_dark_primary
-                                CellValue.O -> Color.White
+                                CellValue.X -> XMarkColor
+                                CellValue.O -> OMarkColor
                                 CellValue.Empty -> Color.Transparent
                             },
                         )
