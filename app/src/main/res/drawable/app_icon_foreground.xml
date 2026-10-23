@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hexo mark: hexagon with an X and an O, inside the 66dp adaptive icon safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="@color/hexo_hex"
+        android:pathData="M54,22L81.71,38L81.71,70L54,86L26.29,70L26.29,38Z" />
+    <path
+        android:pathData="M36.5,46.5L50.5,61.5M50.5,46.5L36.5,61.5"
+        android:strokeWidth="5.2"
+        android:strokeColor="@color/hexo_x"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M65.5,46.4A7.6,7.6 0,1 1,65.5 61.6A7.6,7.6 0,1 1,65.5 46.4Z"
+        android:strokeWidth="5.2"
+        android:strokeColor="@color/hexo_o" />
+</vector>

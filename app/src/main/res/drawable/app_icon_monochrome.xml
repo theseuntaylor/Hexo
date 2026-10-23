@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed icon layer (Android 13+): the X and the O only. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M36.5,46.5L50.5,61.5M50.5,46.5L36.5,61.5"
+        android:strokeWidth="5.2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M65.5,46.4A7.6,7.6 0,1 1,65.5 61.6A7.6,7.6 0,1 1,65.5 46.4Z"
+        android:strokeWidth="5.2"
+        android:strokeColor="#FFFFFFFF" />
+</vector>
