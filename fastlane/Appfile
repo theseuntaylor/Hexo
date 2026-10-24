@@ -1,0 +1,3 @@
+# Path to the Google Play service account JSON key. Keep the key outside the repo.
+json_key_file(ENV["PLAY_JSON_KEY"])
+package_name("com.theseuntaylor.hexo")
