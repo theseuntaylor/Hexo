@@ -42,7 +42,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
-import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
+import com.theseuntaylor.hexo.core.theme.OMarkColor
+import com.theseuntaylor.hexo.core.theme.XMarkColor
 import com.theseuntaylor.hexo.data.model.Room
 import com.theseuntaylor.hexo.navigation.landingRoute
 import kotlinx.coroutines.delay
@@ -85,7 +86,7 @@ fun GameScreen(
         when (val state = uiState) {
             is GameUiState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = md_theme_dark_primary)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             }
 
@@ -103,13 +104,13 @@ fun GameScreen(
 
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        CircularProgressIndicator(color = md_theme_dark_primary)
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                         VerticalSpacer(height = 24.dp)
                         Text(
                             "Waiting for opponent...",
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold,
-                                color = md_theme_dark_primary
+                                color = MaterialTheme.colorScheme.primary
                             )
                         )
                         VerticalSpacer(height = 12.dp)
@@ -128,7 +129,7 @@ fun GameScreen(
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 6.sp
                                 ),
-                                color = md_theme_dark_primary
+                                color = MaterialTheme.colorScheme.primary
                             )
                             IconButton(
                                 onClick = {
@@ -139,7 +140,7 @@ fun GameScreen(
                                 Icon(
                                     imageVector = if (copied) Icons.Default.Check else Icons.Default.ContentCopy,
                                     contentDescription = if (copied) "Copied" else "Copy room code",
-                                    tint = if (copied) Color.Green else md_theme_dark_primary
+                                    tint = if (copied) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
@@ -198,7 +199,7 @@ fun GameScreen(
                             "Opponent disconnected",
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold,
-                                color = md_theme_dark_primary,
+                                color = MaterialTheme.colorScheme.primary,
                             )
                         )
                         VerticalSpacer(height = 8.dp)
@@ -275,7 +276,7 @@ private fun OnlineGameStatusSection(room: Room, mySymbol: String, isFinished: Bo
                     "It's a Draw!",
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -285,7 +286,7 @@ private fun OnlineGameStatusSection(room: Room, mySymbol: String, isFinished: Bo
                     if (youWon) "You Win!" else "You Lose!",
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -294,7 +295,7 @@ private fun OnlineGameStatusSection(room: Room, mySymbol: String, isFinished: Bo
                     "Your Turn",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = md_theme_dark_primary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
                 VerticalSpacer(height = 4.dp)
@@ -324,7 +325,7 @@ private fun OnlineGameBoard(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.outlineVariant),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         for (row in 0..2) {
@@ -358,7 +359,7 @@ private fun OnlineGameCell(
     Box(
         modifier = modifier
             .aspectRatio(1f)
-            .background(Color.LightGray)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable(enabled = isInteractive) { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -369,8 +370,8 @@ private fun OnlineGameCell(
                 fontWeight = FontWeight.Bold
             ),
             color = when (symbol) {
-                "X" -> md_theme_dark_primary
-                "O" -> Color.White
+                "X" -> XMarkColor
+                "O" -> OMarkColor
                 else -> Color.Transparent
             }
         )

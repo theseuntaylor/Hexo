@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.theseuntaylor.hexo.core.composables.Button
 import com.theseuntaylor.hexo.core.composables.VerticalSpacer
-import com.theseuntaylor.hexo.core.theme.md_theme_dark_primary
 import com.theseuntaylor.hexo.navigation.computerGameRoute
 
 @Composable
@@ -31,7 +30,7 @@ fun ComputerSetupScreen(navController: NavController) {
         Text(
             "Opponent",
             style = MaterialTheme.typography.displayLarge.copy(fontWeight = FontWeight.Bold),
-            color = md_theme_dark_primary,
+            color = MaterialTheme.colorScheme.primary,
         )
         VerticalSpacer(height = 40.dp)
 

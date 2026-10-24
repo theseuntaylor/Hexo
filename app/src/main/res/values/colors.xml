@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="hexo_ground">#FF0F2A33</color>
+    <color name="hexo_hex">#FF18414F</color>
+    <color name="hexo_x">#FFFF5C8A</color>
+    <color name="hexo_o">#FF3DD6D0</color>
 </resources>
