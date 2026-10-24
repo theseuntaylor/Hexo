@@ -1,0 +1,21 @@
+default_platform(:android)
+
+platform :android do
+  desc "Check that the service account key can reach the Play Developer API. Uploads nothing."
+  lane :check_play_access do
+    validate_play_store_json_key
+  end
+
+  desc "Upload the icon, feature graphic and phone screenshots in fastlane/metadata. Store text and builds are not changed."
+  desc "This replaces all phone screenshots on the store listing."
+  lane :upload_store_images do
+    upload_to_play_store(
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: true,
+      skip_upload_metadata: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+end

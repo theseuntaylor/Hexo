@@ -17,3 +17,8 @@ key.properties
 
 # Local decision log
 docs/DECISIONS.md
+
+# fastlane local output and Play service account keys
+fastlane/report.xml
+fastlane/README.md
+*service-account*.json
