@@ -22,3 +22,6 @@ docs/DECISIONS.md
 fastlane/report.xml
 fastlane/README.md
 *service-account*.json
+
+# Raw design exports; the store uses fastlane/metadata
+store-assets/
