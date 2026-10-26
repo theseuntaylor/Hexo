@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.plugin.compose'
-    id 'com.google.gms.google-services'
-    id 'com.google.devtools.ksp'
-    id 'dagger.hilt.android.plugin'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.plugin.compose)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.dagger)
 }
 
 android {
@@ -23,48 +23,49 @@ android {
             keyPassword keystoreProperties['keyPassword'] ?: ''
         }
     }
-    compileSdk 36
+    compileSdk = 37
 
     defaultConfig {
-        applicationId "com.theseuntaylor.hexo"
-        minSdk 24
-        targetSdk 36
-        versionCode 7
-        versionName "1.1.6"
+        applicationId = "com.theseuntaylor.hexo"
+        minSdk = 24
+        targetSdk = 36
+        versionCode = 7
+        versionName = "1.1.6"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Lets E2E tests save reports and screenshots; Gradle pulls them into build/outputs.
         testInstrumentationRunnerArguments useTestStorageService: 'true'
         vectorDrawables {
-            useSupportLibrary true
+            useSupportLibrary = true
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
+            signingConfig = signingConfigs.release
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = '17'
     }
     buildFeatures {
-        compose true
+        compose = true
+        viewBinding = true
     }
     testOptions {
         // AGP only installs androidTestUtil APKs (test-services for TestStorage) under the orchestrator.
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        execution = 'ANDROIDX_TEST_ORCHESTRATOR'
     }
     packagingOptions {
         resources {
@@ -74,58 +75,57 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.15.0'
-    implementation 'androidx.core:core-splashscreen:1.0.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
-    implementation 'androidx.activity:activity-compose:1.10.1'
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3'
-    implementation 'androidx.compose.material:material-icons-extended'
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     // Navigation Dependencies
-    implementation 'androidx.navigation:navigation-compose:2.8.9'
+    implementation(libs.androidx.navigation.compose)
 
     // Firebase
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-firestore'
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.firestore)
 
     // Hilt Dependencies
-    implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
-    implementation 'androidx.hilt:hilt-work:1.2.0'
-    implementation 'androidx.work:work-runtime-ktx:2.10.0'
-    implementation 'com.google.dagger:hilt-android:2.55'
-    ksp 'androidx.hilt:hilt-compiler:1.2.0'
-    ksp 'com.google.dagger:hilt-compiler:2.55'
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.hilt.android)
+    ksp(libs.androidx.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     // Retrofit and OkHttp Dependencies
-    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     // Coil and Coroutines Dependencies
-    implementation 'io.coil-kt:coil-compose:2.7.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.1'
+    implementation(libs.coil.compose)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
 
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(platform(libs.kotlin.bom))
+    implementation(platform(libs.firebase.bom))
 
-    implementation platform('androidx.compose:compose-bom:2025.03.00')
-    implementation platform('org.jetbrains.kotlin:kotlin-bom:2.1.10')
-    implementation platform('com.google.firebase:firebase-bom:33.12.0')
+    testImplementation(libs.junit)
 
-    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.storage)
+    androidTestUtil(libs.androidx.test.services)
+    androidTestUtil(libs.androidx.orchestrator)
 
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-    androidTestImplementation 'androidx.test.services:storage:1.5.0'
-    androidTestUtil 'androidx.test.services:test-services:1.5.0'
-    androidTestUtil 'androidx.test:orchestrator:1.5.1'
+    androidTestImplementation(platform(libs.androidx.compose.bom))
 
-    androidTestImplementation platform('androidx.compose:compose-bom:2025.03.00')
-
-    debugImplementation 'androidx.compose.ui:ui-tooling'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
