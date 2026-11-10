@@ -41,8 +41,12 @@ jobs:
 
       - name: Auto-increment versionCode and set versionName from tag
         run: |
-          # Extract current versionCode from build.gradle
-          CURRENT_VERSION_CODE=$(grep -oP 'versionCode \K\d+' app/build.gradle)
+          # Extract current versionCode from build.gradle ("versionCode 7" or "versionCode = 7")
+          CURRENT_VERSION_CODE=$(sed -nE 's/^[[:space:]]*versionCode[[:space:]]*=?[[:space:]]*([0-9]+)[[:space:]]*$/\1/p' app/build.gradle)
+          if [ -z "$CURRENT_VERSION_CODE" ]; then
+            echo "::error::Could not find versionCode in app/build.gradle"
+            exit 1
+          fi
           NEW_VERSION_CODE=$((CURRENT_VERSION_CODE + 1))
 
           # Extract version name from the git tag (v1.2.0 → 1.2.0)
@@ -53,10 +57,10 @@ jobs:
           echo "Setting versionName: $VERSION_NAME (from tag $TAG_NAME)"
 
           # Update versionCode
-          sed -i "s/versionCode $CURRENT_VERSION_CODE/versionCode $NEW_VERSION_CODE/" app/build.gradle
+          sed -i -E "s/^([[:space:]]*versionCode[[:space:]]*=?[[:space:]]*)[0-9]+[[:space:]]*$/\1$NEW_VERSION_CODE/" app/build.gradle
 
-          # Replace the dynamic versionName expression with the tag-derived version
-          sed -i "s/versionName .*/versionName \"$VERSION_NAME\"/" app/build.gradle
+          # Replace the versionName value with the tag-derived version
+          sed -i -E "s/^([[:space:]]*versionName[[:space:]]*=?[[:space:]]*).*/\1\"$VERSION_NAME\"/" app/build.gradle
 
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
           echo "NEW_VERSION_CODE=$NEW_VERSION_CODE" >> $GITHUB_ENV
